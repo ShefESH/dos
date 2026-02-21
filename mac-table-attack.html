@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAC Table Overflow Attack Demo</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mac-table-attack.css">
+</head>
+<body>
+    <nav class="navbar">
+        <span class="logo">DoS Demo</span>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="mac-table-attack.html">MAC Table Overflow</a></li>
+            <li><a href="large-file-crash.html">Large File Crash Tutorial</a></li>
+        </ul>
+    </nav>
+    <div class="mac-card">
+        <h1>MAC Table Overflow Attack Simulation</h1>
+        <p>This demo shows how flooding a network switch with requests from many different MAC addresses can fill up its MAC table, causing normal traffic to be blocked.</p>
+        <div class="mac-controls">
+            <label for="macCount">MAC addresses to flood:</label>
+            <input type="number" id="macCount" min="1" max="1000" value="10">
+            <button id="floodBtn">Flood Switch</button>
+            <button id="resetMacBtn" style="background:#ff4444;color:#fff;">Reset</button>
+        </div>
+        <div class="mac-status" id="macStatus"></div>
+        <table class="mac-table">
+            <thead>
+                <tr><th>MAC Address</th><th>IP Address</th></tr>
+            </thead>
+            <tbody id="macTableBody"></tbody>
+        </table>
+        <div id="macTraffic" style="margin-top:24px;font-size:1.1em;color:#00bfff;"></div>
+        <div id="networkDiagram" style="margin-top:32px;text-align:center;"></div>
+        </div>
+        <script src="mac-table-attack.js"></script>

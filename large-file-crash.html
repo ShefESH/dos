@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Large File Crash Tutorial</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .tutorial-card {
+            max-width: 900px;
+            margin: 32px auto;
+            background: #23272a;
+            border-radius: 16px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.15);
+            border: 2px solid #222;
+            padding: 32px;
+            color: #00ff00;
+        }
+        .server-status {
+            font-size: 1.2em;
+            margin: 24px 0;
+        }
+        .file-slider {
+            width: 100%;
+            max-width: 400px;
+        }
+        .crash-animation {
+            margin: 32px 0;
+            height: 120px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <span class="logo">DoS Demo</span>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="mac-table-attack.html">MAC Table Overflow</a></li>
+            <li><a href="large-file-crash.html">Large File Crash Tutorial</a></li>
+        </ul>
+    </nav>
+    <div class="tutorial-card">
+        <h1>What Happens When You Send an Extremely Large File?</h1>
+        <p>Explore how sending a huge file to a server can overwhelm its resources and cause it to crash.</p>
+        <label for="fileSize">Choose file size to send:</label>
+        <input type="range" id="fileSize" min="1" max="100" value="1" class="file-slider">
+        <span id="fileSizeLabel">1 TB</span>
+        <button id="sendBtn">Send File</button>
+        <div class="server-status" id="serverStatus">Server is running normally.</div>
+        <div class="crash-animation" id="crashAnimation"></div>
+        <div style="margin-top:24px;color:#00bfff;">
+            <strong>Tip:</strong> Servers have limits! Sending files that are too large can cause slowdowns, errors, or even crashes.
+        </div>
+    </div>
+    <script>
+        const fileSizeSlider = document.getElementById('fileSize');
+        const fileSizeLabel = document.getElementById('fileSizeLabel');
+        const sendBtn = document.getElementById('sendBtn');
+        const serverStatus = document.getElementById('serverStatus');
+        const crashAnimation = document.getElementById('crashAnimation');
+
+        fileSizeSlider.setAttribute('max', '100');
+        fileSizeSlider.addEventListener('input', function() {
+            fileSizeLabel.textContent = fileSizeSlider.value + ' TB';
+            serverStatus.textContent = 'Server is running normally.';
+            serverStatus.style.color = '#00ff00';
+            crashAnimation.innerHTML = '';
+        });
+
+        sendBtn.addEventListener('click', function() {
+            const size = parseInt(fileSizeSlider.value);
+            let arrowColor = '#00ff00';
+            let serverColor = '#00bfff';
+            let statusText = '';
+            let crashText = '';
+            let cpuBar = '';
+            let memBar = '';
+            let arrowWidth = 8 + Math.min(size, 100) * 2;
+            arrowWidth = Math.min(arrowWidth, 36);
+            let cpuFill = Math.min(size * 1.2, 100);
+            let memFill = Math.min(size * 1.5, 100);
+            let cpuColor = cpuFill > 80 ? '#ff4444' : cpuFill > 60 ? '#ffa600' : '#00ff00';
+            let memColor = memFill > 80 ? '#ff4444' : memFill > 60 ? '#ffa600' : '#00bfff';
+            if (size < 60) {
+                statusText = 'Server received the file. Processing...';
+                arrowColor = '#00bfff';
+            } else if (size < 90) {
+                statusText = 'Server is struggling... Memory usage is high!';
+                arrowColor = '#ffa600';
+                serverColor = '#ffa600';
+            } else {
+                statusText = 'Server crashed! Out of memory.';
+                arrowColor = '#ff4444';
+                serverColor = '#ff4444';
+                crashText = '<text x="250" y="120" fill="#ff4444" font-size="22" text-anchor="middle">CRASHED</text>';
+            }
+            cpuBar = `<rect x="215" y="110" width="40" height="12" fill="#222" stroke="#fff" stroke-width="1" rx="3" />
+                      <rect x="217" y="112" width="${cpuFill * 0.36}" height="8" fill="${cpuColor}" rx="2" />
+                      <text x="235" y="120" fill="#fff" font-size="9" text-anchor="middle">CPU</text>`;
+            memBar = `<rect x="265" y="110" width="40" height="12" fill="#222" stroke="#fff" stroke-width="1" rx="3" />
+                      <rect x="267" y="112" width="${memFill * 0.36}" height="8" fill="${memColor}" rx="2" />
+                      <text x="285" y="120" fill="#fff" font-size="9" text-anchor="middle">MEM</text>`;
+            serverStatus.textContent = statusText;
+            serverStatus.style.color = arrowColor;
+            crashAnimation.innerHTML = `
+                <svg width="420" height="180">
+                    <!-- Client computer -->
+                    ${(() => {
+                        // Calculate file box width for padding
+                        const fileText = `${size} TB`;
+                        const baseWidth = 60;
+                        const extraWidth = Math.max(0, (fileText.length - 6) * 14);
+                        const fileBoxWidth = baseWidth + extraWidth;
+                        // Add at least 24px padding on each side
+                        const clientBoxWidth = Math.max(80, fileBoxWidth + 48);
+                        return `<rect x="0" y="45" width="${clientBoxWidth}" height="70" fill="#222" stroke="#00bfff" stroke-width="3" rx="10" />`;
+                    })()}
+                    <!-- File icon inside client -->
+                    <!-- Dynamically size file box based on file size text -->
+                    ${(() => {
+                        const fileText = `${size} TB`;
+                        const baseWidth = 60;
+                        const extraWidth = Math.max(0, (fileText.length - 6) * 14);
+                        const fileBoxWidth = baseWidth + extraWidth;
+                        const fileBoxX = 40 - fileBoxWidth / 2;
+                        // Increase height to 40px, adjust text positions
+                        return `<rect x="${fileBoxX}" y="70" width="${fileBoxWidth}" height="40" fill="#333" stroke="#fff" stroke-width="1.5" rx="4" />
+                                <text x="40" y="84" fill="#fff" font-size="17" text-anchor="middle">File</text>
+                                <text x="40" y="104" fill="#00bfff" font-size="15" text-anchor="middle">${size} TB</text>`;
+                    })()}
+                    <text x="40" y="60" fill="#00ff00" font-size="18" text-anchor="middle">Client</text>
+                    <!-- Network arrow -->
+                    ${(() => {
+                        // Calculate client box width
+                        const fileText = `${size} TB`;
+                        const baseWidth = 60;
+                        const extraWidth = Math.max(0, (fileText.length - 6) * 14);
+                        const fileBoxWidth = baseWidth + extraWidth;
+                        const clientBoxWidth = Math.max(80, fileBoxWidth + 48);
+                        // Arrow starts just after client box, ends before server box
+                        const arrowStartX = clientBoxWidth + 10;
+                        const arrowWidthSVG = 90;
+                        const arrowY = 75;
+                        const arrowHeight = arrowWidth;
+                        const arrowEndX = arrowStartX + arrowWidthSVG;
+                        const arrowMidY = arrowY + arrowHeight / 2;
+                        return `<rect x="${arrowStartX}" y="${arrowY}" width="${arrowWidthSVG}" height="${arrowHeight}" fill="${arrowColor}" rx="6" />
+                                <polygon points="${arrowEndX},${arrowMidY - 12} ${arrowEndX + 30},${arrowMidY} ${arrowEndX},${arrowMidY + 12}" fill="${arrowColor}" />`;
+                    })()}
+                    <!-- Server box -->
+                    <rect x="230" y="50" width="100" height="60" fill="#222" stroke="${serverColor}" stroke-width="4" rx="12" />
+                    <text x="280" y="80" fill="#fff" font-size="16" text-anchor="middle">Server</text>
+                    ${cpuBar}
+                    ${memBar}
+                    ${crashText}
+                </svg>
+            `;
+        });
+    </script>
+</body>
+</html>

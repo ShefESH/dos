@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DoS Attack Simulation Demo</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Fira+Mono:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <span class="logo">DoS Demo</span>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="mac-table-attack.html">MAC Table Overflow</a></li>
+            <li><a href="large-file-crash.html">Large File Crash Tutorial</a></li>
+        </ul>
+    </nav>
+    <div class="card">
+        <div class="container">
+            <h1>Denial of Service Simulation</h1>
+            <p>This demo shows how submitting a large number of objects can affect server performance.</p>
+            <label for="objectCount">Number of objects to create:</label>
+            <input type="number" id="objectCount" min="1" max="9999999" value="1000">
+            <button id="createBtn">Create Objects</button>
+            <div id="result"></div>
+            <button id="resetBtn" style="margin-top:30px;background:#ff4444;color:#fff;">Reset</button>
+            <div class="graph-panel">
+                <h2>Performance Graph</h2>
+                <div id="totalObjects" style="font-size:1.2em;margin-bottom:10px;color:#333;"></div>
+                <canvas id="performanceGraph" width="700" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2026 DoS Demo | For educational purposes only | <a href="#contact">Contact</a></p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

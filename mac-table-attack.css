@@ -1,0 +1,112 @@
+/* Nav bar styles */
+nav {
+    background: #222;
+    border-radius: 8px;
+    padding: 8px 24px;
+    margin: 0 24px 24px 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+nav .logo {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #00ff00;
+    letter-spacing: 2px;
+    margin-right: 32px;
+}
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 24px;
+}
+nav ul li {
+    margin: 0;
+}
+nav ul li a {
+    color: #00ff00;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 18px;
+    border-radius: 6px;
+    transition: background 0.2s, color 0.2s;
+    background: transparent;
+    display: block;
+}
+nav ul li a:hover {
+    color: #fff;
+    background: #00bfff;
+}
+/* MAC Table Overflow custom styles */
+.mac-card {
+    width: 80vw;
+    max-width: 900px;
+    margin: 40px auto;
+    background: #23272a;
+    border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.15);
+    border: 2px solid #222;
+    padding: 32px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.mac-table {
+    background: #181a1b;
+    border-radius: 8px;
+    border: 2px solid #00bfff;
+    margin: 24px 0;
+    padding: 16px 32px;
+    width: 100%;
+    max-width: 600px;
+}
+.mac-table th, .mac-table td {
+    padding: 8px 16px;
+    text-align: center;
+    color: #00ff00;
+}
+.mac-table th {
+    color: #00bfff;
+}
+.mac-status {
+    margin: 16px 0;
+    font-size: 1.2em;
+    color: #ff4444;
+}
+.mac-controls {
+    margin: 24px 0;
+    text-align: center;
+}
+.mac-controls input {
+    margin: 0 8px;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #00bfff;
+    background: #181a1b;
+    color: #00ff00;
+}
+.mac-controls button {
+    padding: 10px 20px;
+    background: #00bfff;
+    color: #181a1b;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Fira Mono', 'Consolas', monospace;
+    font-weight: bold;
+    margin-left: 8px;
+}
+.mac-controls button:hover {
+    background: #00ff00;
+    color: #111;
+}
+.mac-table tbody {
+    display: block;
+    max-height: 240px;
+    overflow-y: auto;
+}
+.mac-table thead, .mac-table tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
